@@ -1,6 +1,6 @@
 # MMA-QENS
 
-MMA-QENS (Minimal Model Analysis for QENS) is a Python framework for analyzing quasielastic neutron scattering (QENS) data in the time domain. This package can be used to obtain the intermediate scattering function from QENS spectra through inverse Fourier transformation and fit it to extract dynamic parameters, the stretching exponent, relaxation time, and elastic incoherent structure factor (EISF).
+MMA-QENS (Minimal Model Analysis for QENS) is a Python framework for analyzing quasielastic neutron scattering (QENS) data in the time domain. This package can be used to obtain the intermediate scattering function `F(Q, t)` from QENS spectra through inverse Fourier transformation and fit it to extract dynamic parameters, the stretching exponent, relaxation time, and elastic incoherent structure factor (EISF).
 
 This includes the following four methods, performing a key step in the analysis process:
 
