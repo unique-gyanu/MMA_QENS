@@ -29,7 +29,7 @@ dependencies = [
 ]
 
 [project.urls]
-Source = "https://github.com/dtu-energy/cPaiNN"
+Source = "https://github.com/unique-gyanu/MMA-QENS"
 
 [tool.setuptools]
 packages = ["MMA_QENS"]
