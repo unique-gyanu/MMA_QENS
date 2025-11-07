@@ -9,7 +9,7 @@ This includes the following four methods, performing a key step in the analysis 
 - **`Fitting()`** — Fits `F(Q, t)` to extract dynamic parameters.  
 - **`Resample()`** — Reconstructs the fitted `S(Q, ω)` from the fitted `F(Q, t)` for direct comparison with experimental data.
 
-An example of this is shown in [bulk water test notebook](https://github.com/unique-gyanu/MMA_QENS/blob/main/test/test_bulkWater.ipynb)
+An example of this is shown in [bulk water test notebook](https://github.com/unique-gyanu/MMA_QENS/blob/main/test/test_bulkWater.ipynb).
 
 To install MMA-QENS use the commando, when in the repository;
 ```bash
