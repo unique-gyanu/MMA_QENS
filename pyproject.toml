@@ -1,0 +1,35 @@
+[build-system]
+requires = [
+    "setuptools>=65",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "MMA-QENS"
+version = "1.0.0"
+authors = [{name = "Unqiue Gyanu Yogi", email =}]
+description = "A Minimal Model Approach for QENS data analysis (MMA-QENS)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "GPL v3.0"}
+classifiers = [
+    "Development Status :: 1 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "numpy",
+    "scipy",,
+    "iminuit",
+    "matplotlib",
+    "pydynamic",
+]
+
+[project.urls]
+Source = "https://github.com/dtu-energy/cPaiNN"
+
+[tool.setuptools]
+packages = ["MMA_QENS"]
