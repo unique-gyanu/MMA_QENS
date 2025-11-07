@@ -334,7 +334,7 @@ class Minimal_Model:
         
         Parameters:
         ----------
-            symside : string
+            symside : string 'negative' or 'positive'
                 A string to choose which part of the spectrum to use 
             yscale : string, optional
                 A string setting the y-axis scale of the plots. If 'None' then the scale is in 'log'
@@ -346,22 +346,8 @@ class Minimal_Model:
                 If 'True', all plots are shown. Default is 'True'
             saveplot : bool, optional
                 If 'True', all shown plots are saved as png-files. Default is 'False'.
-
-        Returns
-        -------
-            numpy.ndarray
-                A 2D ``array`` of the symmetries and normalized measured QENS spectra
-            numpy.ndarray
-                A 2D ``array`` of the symmetries and normalized measured vanadium QENS spectra
-            numpy.ndarray
-                A 2D ``array`` of the uncertanties for the symmetries and normalized measured QENS spectra
-            numpy.ndarray
-                A 2D ``array`` of the uncertanties for the symmetries and normalized measured vanadium QENS spectra
-            numpy.ndarray
-                A 1D ``array`` of the Q-values in Å
-            numpy.ndarray
-                A 1D ``array`` of the symmetried energy transfer in meV
         """
+        
         inches_to_cm = 2.54
         figsize = (20 / inches_to_cm, 18 / inches_to_cm)
         plt.rcParams.update({'font.size': 14})
@@ -508,17 +494,6 @@ class Minimal_Model:
                 If 'True', all plots are shown. Default is 'True'
             saveplot : bool, optional
                 If 'True', all shown plots are saved as png-files. Default is 'False'.
-
-        Returns
-        -------
-            numpy.ndarray
-                A 2D ``array`` of the symmetries, normalized and deconvolved intermediate scattering function for the sample
-            numpy.ndarray
-                A 2D ``array`` of the uncertanties for the symmetries, normalized and deconvolved intermediate scattering function for the sample
-            numpy.ndarray
-                A 2D ``array`` of the symmetries and normalized intermediate scattering function for the vanadium
-            numpy.ndarray
-                A 1D ``array`` of the time in ps
         """
         
         # Figsize
@@ -560,20 +535,7 @@ class Minimal_Model:
             elif error == 'linear':
                 fqterror[i] = fqterror[i]*np.sqrt(np.sum(self.sqwerrorsymcorrnorm[i]**2))*deltaomega
                 TimeWindow_error[i] = TimeWindow_error[i]*np.sqrt(np.sum(self.vana_sqwerrorsymcorrnorm[i]**2))*deltaomega
-
-            #elif error == 'DFT':
-            #    signal = self.sqwsymcorrnorm[i][IndexFFT]
-            #    signal_error = self.sqwerrorsymcorrnorm[i][IndexFFT]
-
-            #    vana_signal = self.vana_sqwsymcorrnorm[i][IndexFFT]
-            #    vana_signal_error = self.vana_sqwerrorsymcorrnorm[i][IndexFFT]
-
-            #   _, Ufqt = GUM_DFT(signal, signal_error**2)
-            #    _, Uvana_fqt = GUM_DFT(vana_signal, vana_signal_error**2)
-
-            #    fqterror[i] = np.sqrt(np.diag(Ufqt[:len(IndexFFT)])) * deltaomega * self.Nomegasym
-            #    TimeWindow_error[i] = np.sqrt(np.diag(Uvana_fqt[:len(IndexFFT)])) * deltaomega * self.Nomegasym
-            
+                
             elif error == 'pydynamic':
                 signal = self.sqwsymcorrnorm[i][IndexFFT]
                 signal_error = self.sqwerrorsymcorrnorm[i][IndexFFT]
@@ -641,7 +603,7 @@ class Minimal_Model:
             fig4.savefig('./figure/'+self.filename+'convolved.png', dpi=600)
             fig5.savefig('./figure/'+self.filename+'deconvolved.png', dpi=600)
     
-    def Fitting(self, N_cut = 20, index_fit = 1, algo = 'iminuit', p0=[5,0.1,0.1], useerror=False, showplot = True, saveplot = False):
+    def Fitting(self, N_cut = 20, algo = 'iminuit', p0=[5,0.1,0.1], useerror=False, showplot = True, saveplot = False):
         """
         Fitting the simple model to the intermediate scattering function
 
@@ -658,13 +620,7 @@ class Minimal_Model:
                 If 'True', all plots are shown. Default is 'True'
             saveplot : bool, optional
                 If 'True', all shown plots are saved as png-files. Default is 'False'.
-
-        Returns
-        -------
-            list
-                A 3D ``list`` [tau,alpha,eisf] of the fit paramaters
-            list
-                A 3D ``list`` [tau_error,alpha_error,eisf_error] of the uncertainties for the fit paramaters
+                
     """
 
         # Figsize
@@ -797,15 +753,6 @@ class Minimal_Model:
                 A 1D ``array`` of the fit of the measured data
             sigmas : numpy.array
                 A 1D ``array`` of the uncertainties for the measured data
-            
-        Returns
-        -------
-            float
-                A float of the reduced chi^2 value 
-            float
-                A float of the number of degrees of freedom
-            float
-                A float of the chi^2 probability
         """
 
         # Figsize
