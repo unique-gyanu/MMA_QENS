@@ -21,7 +21,7 @@ from iminuit import Minuit
 from PyDynamic.uncertainty.propagate_DFT import GUM_DFT
 
 from pythonpackage.ExternalFunctions import Chi2Regression, BinnedLH, UnbinnedLH
-from pythonpackage.ExternalFunctions import nice_string_output, add_text_to_ax   # Useful functions to print fit results on figure
+from pythonpackage.ExternalFunctions import nice_string_output, add_text_to_ax
 
 #====================================================================        
 #                           Fitting Model
