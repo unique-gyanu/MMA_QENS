@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "MMA-QENS"
 version = "1.0.0"
-authors = [{name = "Unqiue Gyanu Yogi", email =}]
+authors = [{name = "Unqiue Gyanu Yogi", email ="unique.yogi09@gmail.com"}]
 description = "A Minimal Model Approach for QENS data analysis (MMA-QENS)"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -22,7 +22,7 @@ classifiers = [
 
 dependencies = [
     "numpy",
-    "scipy",,
+    "scipy",
     "iminuit",
     "matplotlib",
     "pydynamic",
