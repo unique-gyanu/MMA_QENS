@@ -23,6 +23,50 @@ from PyDynamic.uncertainty.propagate_DFT import GUM_DFT
 from pythonpackage.ExternalFunctions import Chi2Regression, BinnedLH, UnbinnedLH
 from pythonpackage.ExternalFunctions import nice_string_output, add_text_to_ax   # Useful functions to print fit results on figure
 
+# =============================================================================
+#  Probfit replacement
+# =============================================================================
+
+from iminuit.util import make_func_code
+from iminuit import describe
+
+def set_var_if_None(var, x):
+    if var is not None:
+        return np.array(var)
+    else: 
+        return np.ones_like(x)
+    
+def compute_f(f, x, *par):
+    
+    try:
+        return f(x, *par)
+    except ValueError:
+        return np.array([f(xi, *par) for xi in x])
+
+
+class Chi2Regression:  # override the class with a better one
+    
+    def __init__(self, f, x, y, sy=None, weights=None):
+        
+        self.f = f  # model predicts y for given x
+        self.x = np.array(x)
+        self.y = np.array(y)
+        
+        self.sy = set_var_if_None(sy, self.x)
+        self.weights = set_var_if_None(weights, self.x)
+        self.func_code = make_func_code(describe(self.f)[1:])
+
+    def __call__(self, *par):  # par are a variable number of model parameters
+        
+        # compute the function value
+        f = compute_f(self.f, self.x, *par)
+        
+        # compute the chi2-value
+        chi2 = np.sum(self.weights*(self.y - f)**2/self.sy**2)
+        
+        return chi2
+
+
 #====================================================================        
 #                           Fitting Model
 #====================================================================
