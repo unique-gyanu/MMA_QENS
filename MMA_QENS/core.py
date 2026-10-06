@@ -13,8 +13,6 @@ from iminuit import Minuit
 
 from PyDynamic.uncertainty.propagate_DFT import GUM_DFT # used for error propagation
 
-from pythonpackage.ExternalFunctions import Chi2Regression, BinnedLH, UnbinnedLH
-
 #====================================================================        
 #                           Fitting Model
 #====================================================================
