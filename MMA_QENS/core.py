@@ -270,16 +270,20 @@ def OptimalParam_RU(t, phi_s_star_j, pj, log_epsilon):
     return muj, hj, Nj
 
 
-def Chi2Regression(f, x, y, *par, sy=None, weights=None):
+def Chi2Regression(f, x, y, sy=None, weights=None):
     x = np.asarray(x)
     y = np.asarray(y)
 
     sy = 1.0 if sy is None else np.asarray(sy)
     weights = 1.0 if weights is None else np.asarray(weights)
 
-    predicted = compute_f(f, x, *par)
+    def cost(tau, alpha, eisf):
+        predicted = f(x, tau, alpha, eisf)
+        return np.sum(weights * ((y - predicted) / sy)**2)
 
-    return np.sum(weights * ((y - predicted) / sy)**2)
+    cost.errordef = 1.0
+
+    return cost
 
 
 def calc_chi2(y_data, y_fit, sigmas):
