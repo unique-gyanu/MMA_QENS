@@ -492,29 +492,53 @@ class Minimal_Model:
                 vana_err_sym = np.concatenate((vana_err_minus, vana_err_plus))
 
             elif usespectra == 'positive':
-                omegaplus = w[w >= 0]
-                omegaminus = -np.delete(omegaplus, 0)[::-1]
-                omegasym_i = np.concatenate((omegaminus, omegaplus))
-                weightplus = np.exp(-omegaplus / (kb * self.T * 2 * converter * 1e3))
+                w = np.asarray(w)
+                positive_mask = w >= 0
+                omegaplus = w[positive_mask]
 
-                sqwnew = self.sqw[i][::self.index]
-                sqwplus = sqwnew[j0:] * weightplus
-                sqwminus = np.abs(np.delete(sqwplus, 0)[::-1])
+                if omegaplus.size == 0:
+                    raise ValueError(f"No non-negative energy points for Q index {i}")
+
+                # Mirror every positive point; do not duplicate zero if present.
+                mirror_mask = omegaplus > 0
+                omegaminus = -omegaplus[mirror_mask][::-1]
+                omegasym_i = np.concatenate((omegaminus, omegaplus))
+
+                weightplus = np.exp(
+                    -omegaplus / (kb * self.T * 2 * converter * 1e3)
+                )
+
+                sqwnew = np.asarray(self.sqw[i])[::self.index]
+                sqwerrnew = np.asarray(self.sqwerror[i])[::self.index]
+                vana_new = np.asarray(self.vana_sqw[i])[::self.index]
+                vana_err_new = np.asarray(self.vana_sqwerror[i])[::self.index]
+                
+                for name, values in [
+                    ("sqw", sqwnew),
+                    ("sqwerror", sqwerrnew),
+                    ("vana_sqw", vana_new),
+                    ("vana_sqwerror", vana_err_new),
+                ]:
+                    if values.shape != w.shape:
+                        raise ValueError(
+                            f"Q index {i}: {name} shape {values.shape} "
+                            f"does not match energy shape {w.shape}"
+                        )
+
+                sqwplus = sqwnew[positive_mask] * weightplus
+                sqwminus = sqwplus[mirror_mask][::-1]
                 sqwsym = np.concatenate((sqwminus, sqwplus))
 
-                sqwerrnew = self.sqwerror[i][::self.index]
-                sqwerrplus = sqwerrnew[j0:] * weightplus
-                sqwerrminus = np.abs(np.delete(sqwerrplus, 0)[::-1])
+                sqwerrplus = sqwerrnew[positive_mask] * weightplus
+                sqwerrminus = sqwerrplus[mirror_mask][::-1]
                 sqwerrsym = np.concatenate((sqwerrminus, sqwerrplus))
 
-                vana_new = self.vana_sqw[i][::self.index]
-                vana_plus = vana_new[j0:] * weightplus
-                vana_minus = np.abs(np.delete(vana_plus, 0)[::-1])
+                vana_plus = vana_new[positive_mask] * weightplus
+                vana_minus = vana_plus[mirror_mask][::-1]
                 vana_sym = np.concatenate((vana_minus, vana_plus))
 
-                vana_err_new = self.vana_sqwerror[i][::self.index]
-                vana_err_plus = vana_err_new[j0:] * weightplus
-                vana_err_minus = np.abs(np.delete(vana_err_plus, 0)[::-1])
+                vana_err_plus = vana_err_new[positive_mask] * weightplus
+                vana_err_minus = vana_err_plus[mirror_mask][::-1]
                 vana_err_sym = np.concatenate((vana_err_minus, vana_err_plus))
             else:
                 raise ValueError(f"Usespectra must be 'negative' or 'positive'")
